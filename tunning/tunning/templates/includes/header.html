@@ -1,0 +1,22 @@
+<div class="top-bar">
+    <div class="top-bar-left">
+      <ul class="dropdown menu" data-dropdown-menu>
+        <li class="menu-text">Menu de Opciones </li>
+        <li>
+          <a href="#">Proyecto Activos</a>
+        </li>
+        
+        <li><a href="{% url 'cdocumentos_app:proyecto_asignado' codjp=480 %}">Proyecto Sin Registrar</a></li>
+
+
+
+        <li><a href="#">Reportes</a></li>
+      </ul>
+    </div>
+    <div class="top-bar-right">
+      <ul class="menu">
+        <li><input type="search" placeholder="Buscar Proyecto"></li>
+        <li><button type="button" class="button">Buscar Proyecto</button></li>
+      </ul>
+    </div>
+  </div>

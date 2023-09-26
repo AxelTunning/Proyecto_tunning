@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+
+    <h1>Cargar Archivo Excel y Mostrar Resultado</h1>
+    
+    <form id="formArchivo" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        
+        <h2>Cargar Archivo Excel y Mostrar Resultado</h2>
+
+        <label for="excelFile">Selecciona un archivo Excel:</label>
+        <input type="file" id="excelFile" accept=".xlsx, .xls">
+        <br>
+        <input type="submit" value="Cargar">
+    </form>
+    
+    <div id="resultado" style="display: none;">
+        <h2>Resultado de Carga</h2>
+        <table border="1" id="tablaResultado">
+            <thead>
+                <tr>
+                    <th>Columna 1</th>
+                    <th>Columna 2</th>
+                    <!-- Agrega más encabezados de columna según tus datos -->
+                </tr>
+            </thead>
+            <tbody id="cuerpoTablaResultado"></tbody>
+        </table>
+        <br>
+        <input type="button" value="Guardar Datos" onclick="guardarDatos()">
+    </div>
+    
+    <script>
+        function mostrarResultado(datos) {
+            var cuerpoTabla = document.getElementById('cuerpoTablaResultado');
+
+            // Limpia la tabla antes de mostrar los nuevos datos
+            cuerpoTabla.innerHTML = '';
+
+            datos.forEach(function(dato) {
+                var fila = document.createElement('tr');
+                
+                var celda1 = document.createElement('td');
+                celda1.textContent = dato.columna1;
+                fila.appendChild(celda1);
+                
+                var celda2 = document.createElement('td');
+                celda2.textContent = dato.columna2;
+                fila.appendChild(celda2);
+                
+                // Agrega más celdas según tus datos
+                
+                cuerpoTabla.appendChild(fila);
+            });
+            
+            document.getElementById('resultado').style.display = 'block';
+        }
+
+        function guardarDatos() {
+            var filasTabla = document.querySelectorAll('#cuerpoTablaResultado tr');
+            var datosGuardar = [];
+    
+            filasTabla.forEach(function(fila) {
+                var celdas = fila.querySelectorAll('td');
+                var dato = {
+                    columna1: celdas[0].textContent,
+                    columna2: celdas[1].textContent
+                    // Agrega más campos si es necesario
+                };
+                datosGuardar.push(dato);
+            });
+    
+            if (datosGuardar.length > 0) {
+                $.ajax({
+                    url: '{% url "proyecto_guardar_datos" %}',  // Cambia esto por la URL correcta
+                    type: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        datos: JSON.stringify(datosGuardar)
+                    },
+                    success: function(response) {
+                        alert('Datos guardados exitosamente');
+                        // Puedes agregar aquí cualquier otro código que quieras ejecutar después de guardar los datos
+                    }
+                });
+            } else {
+                alert('No hay datos para guardar');
+            }
+        }
+    </script>
+{% endblock content %}

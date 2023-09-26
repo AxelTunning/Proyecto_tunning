@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+
+<h2>Cargar Archivo Excel y Mostrar Resultado</h2>
+
+<p>Código de Proyecto: {{ request.GET.codigo }}</p>
+
+<form id="formArchivo" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <label for="excelFile">Selecciona un archivo Excel: </label>
+    <input type="file" name="excelFile" id="excelFile" accept=".xlsx, .xls"> 
+    <br>
+    <input type="hidden" name="codigo" value="{{ request.GET.codigo }}">
+    <input type="submit" value="Cargar">
+</form>
+
+{% endblock content %}

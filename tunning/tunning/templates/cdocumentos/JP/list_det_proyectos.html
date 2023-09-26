@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{%load static %}
+
+
+
+{% block content %}
+{% include 'includes/header.html' %}
+<div class="grid-container">
+  <div class="grid-x">
+    <h1 class="cell" style="font-size: 30px;" >Lista de todos los proyectos Asignados</h1>
+  </div>
+
+  <div class="cell">
+    <table>
+      <thead>
+        <tr>
+          <th width="150" style="text-align: center;">Código de Proyecto</th>
+          <th width="400" style="text-align: center;">Cliente</th>
+          <th width="500" style="text-align: center;">Nombre del Proyecto</th>
+          <th width="100" style="text-align: center;">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in object_list %}
+        <tr>
+          <td style="text-align: center; font-size: 12px;">{{ e.CodigoProyecto }}</td>
+          <td style="text-align: center; font-size: 12px;">{{ e.NomAux | upper }}</td>
+          <td style="text-align: center; font-size: 12px;">{{ e.Nombre | upper }}</td>
+          <td style="text-align: center; font-size: 12px;">
+            <a class="button tiny" href="{% url 'cdocumentos_app:ing_proyecto' %}?codigo={{ e.CodigoProyecto }}">Registrar</a>
+        </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+{% endblock content %}

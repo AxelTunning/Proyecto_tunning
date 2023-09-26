@@ -1,0 +1,16 @@
+<!-- show_excel_table.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+
+<h2>Tabla de Datos del Archivo Excel</h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        {{ table_html|safe }}
+    </table>
+</div>
+
+{% endblock content %}

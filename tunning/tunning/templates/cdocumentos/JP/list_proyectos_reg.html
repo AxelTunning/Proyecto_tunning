@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+<div class="grid-x">
+  <h1 class="cell" style="font-size: 30px;">Lista de todos los proyectos Registrados</h1>
+</div>
+
+<div class="grid-container">
+  <div class="cell">
+    <table>
+      <thead>
+        <tr>
+          <th width="150" style="text-align: center;font-size: 15px;background-color: rgb(101, 206, 206); color: white;">Código de Proyecto</th>
+          <th width="400" style="text-align: center;font-size: 15px;background-color: rgb(101, 206, 206); color: white;">Nombre del Proyecto</th>
+          <th width="500" style="text-align: center;font-size: 15px;background-color: rgb(101, 206, 206); color: white;">Cliente</th>
+          <th width="500" style="text-align: center;font-size: 15px;background-color: rgb(101, 206, 206); color: white;">Total de Documentos Registrados</th>
+          <th width="500" style="text-align: center;font-size: 15px;background-color: rgb(101, 206, 206); color: white;">Nro de Transmittal Salida</th>
+          <th width="500" style="text-align: center;font-size: 15px;background-color: rgb(101, 206, 206); color: white;">Nro de Transmittal Entrada</th>
+          <th width="500" style="text-align: center;font-size: 15px;background-color: rgb(101, 206, 206); color: white;">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in object_list %}
+        <tr>
+          <td style="text-align: center; font-size: 12px;">{{ e.CodigoProyecto }}</td>
+          <td style="text-align: center; font-size: 12px;">{{ e.Nombre | upper }}</td>
+          <td style="text-align: center; font-size: 12px;">{{ e.NomAux | upper }}</td>
+          <td style="text-align: center; font-size: 12px;">{{ e.Total_documento}}</td>
+          <td style="text-align: center; font-size: 12px;">{{ e.transmittal_ot}}</td>
+          <td style="text-align: center; font-size: 12px;">{{ e.transmittal_ing}}</td>
+
+          <td style="text-align: center; font-size: 12px;">
+            <a class="button tiny" href="{% url 'cdocumentos_app:carga_listado_entregable' %}?codigo={{ e.CodigoProyecto }}">Ingresa Listado</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}

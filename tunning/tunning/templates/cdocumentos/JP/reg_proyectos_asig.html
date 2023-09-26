@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  {% include 'includes/header.html' %}
+  <h3>Ingresa Proyecto y Detalles de Persona</h3>
+
+  <style>
+    /* Tus estilos aquí */
+  </style>
+
+  <div class="grid-container">
+    <form id="formulario" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="grid-x grid-padding-x">
+        <!-- Campos de Proyecto y Persona -->
+        <div class="medium-6 cell">
+          <label>
+            <span class="label-text">Código de Proyecto</span>
+            {{ form_proyecto_persona.CodigoProyecto }}
+          </label>
+          <!-- Agrega un campo oculto para enviar el CodigoProyecto -->
+          <input type="hidden" name="CodigoProyecto" value="{{ codigo_proyecto }}" disabled>
+        </div>
+        
+        <div class="medium-6 cell">
+          <label>Días de Entrega de Documentos</label>
+          {{ form_proyecto_persona.dia_entrega_doc }}
+        </div>
+        <div class="medium-6 cell">
+          <label>Datos de Contacto</label>
+          {{ form_proyecto_persona.personal_contacto }}
+        </div>
+        <div class="medium-6 cell">
+          <label>Email de Persona de Contacto</label>
+          {{ form_proyecto_persona.email_persona }}
+        </div>
+      </div>
+
+      <div class="grid-x grid-padding-x">
+        <!-- Listas de Personas -->
+        <div class="medium-6 cell">
+          <label>Personas disponibles que vas a pertenecer a este Proyecto</label>
+          <select multiple class="cell large-5" id="personalDisponible" size="10">
+            {% for persona in nombres_personas %}
+            <option value="{{ persona.id }}">{{ persona.nombre }} {{ persona.appaterno }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="medium-6 cell">
+          <label>Personas Seleccionadas</label>
+          <select multiple class="cell large-5" id="personalSeleccionado" name="personalSeleccionado" size="11">
+            <!-- Opciones seleccionadas aparecerán aquí -->
+          </select>
+          
+        </div>
+      </div>
+
+      <div class="medium-6 cell">
+
+        <button id="moverDerecha" type="button">Seleccionar</button>
+          <button id="moverIzquierda" type="button">Quitar</button>
+        <input type="text" id="buscarPersona" placeholder="Buscar persona...">
+        <button class="submit success button" type="submit">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#buscarPersona').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('#personalDisponible option').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+      });
+
+      $('#moverDerecha').on('click', function() {
+        $('#personalDisponible option:selected').each(function() {
+          $(this).appendTo('#personalSeleccionado');
+        });
+      });
+
+      $('#moverIzquierda').on('click', function() {
+        $('#personalSeleccionado option:selected').each(function() {
+          $(this).appendTo('#personalDisponible');
+        });
+      });
+
+      $('#formulario').on('submit', async function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const fichasSeleccionadas = $('#personalSeleccionado option').map(function() {
+          return $(this).val();
+        }).get();
+
+        formData.append('personalSeleccionado', fichasSeleccionadas);
+
+        try {
+          const response = await fetch('/ing-proyectos-asig/', {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            body: formData
+          });
+
+          console.log('Respuesta del servidor:', response);
+          // Realiza alguna acción con la respuesta, si es necesario
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  </script>
+{% endblock content %}

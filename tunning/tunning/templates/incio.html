@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+
+Pagina de Inicio Control Documentos
+
+{% endblock titulo %}
+
+
+{% block content %}
+    {% include 'includes/header.html' %}
+    <h1 style="font-size: 30px;">
+        Pagina de Registro de Control Documentos
+    </h1>
+
+<!-- Inicio de Imagen de Portada -->
+
+<div class="image-container">
+    <!-- <img src="{% static 'img/imagen4.jpg' %}" alt="Trabajando" width="15%"> -->
+    <img src="{% static 'img/imagen4.jpg' %}" alt="Trabajando" width="25%" style="display: block; margin-left: auto; margin-right: auto;">
+</div>  
+<!-- Fin de Imagen de Portada -->
+
+
+<!-- Bloque de Bienvenida -->
+<div class="grid-x align-center">
+    <h1 class = "cell large-8" style="font-size:20px ;"> Registro de Contol de Documentos de Tunning</h1>
+    <div class = "cell large-7">
+        
+    </div>
+</div>
+
+<!-- Fin de Bloque de Bienvenida -->
+
+    
+{% endblock content %}
+    
